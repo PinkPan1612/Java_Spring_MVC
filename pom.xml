@@ -57,6 +57,25 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<!-- Công cụ Biên dịch JSP-->
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+		</dependency>
+
+		<!-- chứa API cho JSP Standard Tag Library (JSTL), 
+		cung cấp các tag hữu ích để xử lý logic và hiển thị dữ liệu trong các trang JSP.-->
+		<dependency>
+			<groupId>jakarta.servlet.jsp.jstl</groupId>
+			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+		</dependency>
+		<!-- chứa hiện thực của JSTL dựa trên Jakarta Servlet,
+		 cho phép bạn sử dụng các tag JSTL trong các ứng dụng web-->
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>jakarta.servlet.jsp.jstl</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
