@@ -2,6 +2,7 @@ package vn.hoidanit.laptopshop.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
 
 import vn.hoidanit.laptopshop.service.UserService;
 
@@ -15,11 +16,12 @@ public class UserController {
     }
 
     @RequestMapping("/")
-    public String getHomePage() {
+    public String getHomePage(Model model) {
         String text = this.userService.handleHello();
+        model.addAttribute("text", text);
+        model.addAttribute("name", "from controller with model");
         return "hello";
     }
-
 }
 
 // @RestController
