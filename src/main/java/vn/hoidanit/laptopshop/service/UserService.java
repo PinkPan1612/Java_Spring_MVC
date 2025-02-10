@@ -19,14 +19,17 @@ public class UserService {
         return "Hello from service";
     }
 
+    // get all users
     public List<User> getAllUsers() {
         return this.userRepository.findAll();
     }
 
+    // get user by email
     public List<User> getAllUsersByEmail(String email) {
         return this.userRepository.findOneByEmail(email);
     }
 
+    // save user
     public User handleSaveUser(User user) {
         User eric = this.userRepository.save(user);
         System.out.println(eric.toString());
