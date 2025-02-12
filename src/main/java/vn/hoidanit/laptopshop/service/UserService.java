@@ -35,4 +35,14 @@ public class UserService {
         System.out.println(eric.toString());
         return eric;
     }
+
+    // get detail user
+    public User getUserById(long id) {
+        return this.userRepository.findOneById(id);
+    }
+
+    // update user
+    public User updateUser(User user) {
+        return this.userRepository.save(user);
+    }
 }
