@@ -94,15 +94,14 @@ public class UserController {
     @GetMapping("/admin/user/delete/{id}")
     public String getDeleteUserPage(Model model, @PathVariable long id) {
         model.addAttribute("id", id);
+        model.addAttribute("user", new User());
         return "admin/user/delete";
 
     }
 
-    // delete user page
-    @GetMapping("/admin/user/confirm-delete/{id}")
-    public String getMethodName(Model model, @PathVariable long id) {
-        this.userService.deleteUserById(id);
+    @PostMapping("/admin/user/delete")
+    public String postDeleteUser(Model model, @ModelAttribute("user") User hoidanIT) {
+        this.userService.deleteAUser(hoidanIT.getId());
         return "redirect:/admin/user";
     }
-
 }

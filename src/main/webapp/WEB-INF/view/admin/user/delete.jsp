@@ -25,14 +25,18 @@
                         <div class="col-12 mx-auto">
                             <h3>Delete a user with id = ${id}</h3>
                             <hr />
-                            <form action="/admin/user/confirm-delete/${id}">
-                                <div class="alert alert-danger" role="alert">
-                                    <p>
-                                        Do you want to delete user with <span style="font-weight: bold;">id:
-                                            ${id}</span>?
-                                        <br>
-                                        This action cannot be undone.
-                                    </p>
+                            <div class="alert alert-danger" role="alert">
+                                <p>
+                                    Do you want to delete user with <span style="font-weight: bold;">id:
+                                        ${id}</span>?
+                                    <br>
+                                    This action cannot be undone.
+                                </p>
+                            </div>
+                            <form:form action="/admin/user/delete" method="post" modelAttribute="user">
+                                <div class="mb-3" style="display: none;">
+                                    <label class="form-label">Id: </label>
+                                    <form:input value="${id}" type="text" class="form-control" path="id" />
                                 </div>
                                 <div class="mx-2">
                                     <button class="btn btn-danger">Confirm
@@ -40,7 +44,7 @@
                                     <a href="/admin/user" class="btn btn-success mx-2">Back</a>
                                 </div>
 
-                            </form>
+                            </form:form>
                         </div>
 
             </body>

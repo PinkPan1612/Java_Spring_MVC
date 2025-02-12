@@ -28,7 +28,6 @@
                 <div class="mb-3" style="display: none;">
                   <label class="form-label">Id: </label>
                   <form:input type="text" class="form-control" path="id" />
-                  <!-- <form:hidden path="id" /> -->
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Email:</label>
