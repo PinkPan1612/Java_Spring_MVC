@@ -1,5 +1,6 @@
 package vn.hoidanit.laptopshop.controller;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import vn.hoidanit.laptopshop.service.UserService;
 import vn.hoidanit.laptopshop.domain.User;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class UserController {
@@ -87,4 +89,20 @@ public class UserController {
         this.userService.handleSaveUser(hoidanIT);
         return "redirect:/admin/user";
     }
+
+    // open delete user page
+    @GetMapping("/admin/user/delete/{id}")
+    public String getDeleteUserPage(Model model, @PathVariable long id) {
+        model.addAttribute("id", id);
+        return "admin/user/delete";
+
+    }
+
+    // delete user page
+    @GetMapping("/admin/user/confirm-delete/{id}")
+    public String getMethodName(Model model, @PathVariable long id) {
+        this.userService.deleteUserById(id);
+        return "redirect:/admin/user";
+    }
+
 }
