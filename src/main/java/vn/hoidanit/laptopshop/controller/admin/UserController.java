@@ -1,6 +1,5 @@
-package vn.hoidanit.laptopshop.controller;
+package vn.hoidanit.laptopshop.controller.admin;
 
-import java.nio.file.Path;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -14,7 +13,6 @@ import org.springframework.ui.Model;
 
 import vn.hoidanit.laptopshop.service.UserService;
 import vn.hoidanit.laptopshop.domain.User;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -29,8 +27,8 @@ public class UserController {
     // home Page
     @RequestMapping("/")
     public String getHomePage(Model model) {
-        List<User> arrUsers = this.userService.getAllUsersByEmail("2@gmail.com");
-        System.out.println(arrUsers);
+        // List<User> arrUsers = this.userService.getAllUsersByEmail("2@gmail.com");
+        // System.out.println(arrUsers);
         model.addAttribute("text", "text");
         model.addAttribute("name", "from controller with model");
         return "hello";
@@ -41,7 +39,7 @@ public class UserController {
     public String getUserPage(Model model) {
         List<User> users = this.userService.getAllUsers();
         model.addAttribute("users", users);
-        return "admin/user/table-user";
+        return "admin/user/show";
     }
 
     // detail user
@@ -52,7 +50,7 @@ public class UserController {
         model.addAttribute("id", id);
         User detailsUser = this.userService.getUserById(id);
         model.addAttribute("user", detailsUser);
-        return "admin/user/show";
+        return "admin/user/detail";
     }
 
     @RequestMapping("/admin/user/update/{id}")
