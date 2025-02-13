@@ -1,5 +1,6 @@
 package vn.hoidanit.laptopshop.domain;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +24,9 @@ public class Product {
     private String factory;
     private String target;
 
-    
+    // Order_detail
+    // product one -> many -> order_detail
+    // quan hệ 1 chiều nên không cần khai báo
 
     public long getId() {
         return id;
