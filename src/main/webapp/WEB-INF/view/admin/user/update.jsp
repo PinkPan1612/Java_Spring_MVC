@@ -49,6 +49,7 @@
                   <form:input type="text" class="form-control" path="address" />
                 </div>
                 <button type="submit" class="btn btn-warning">Update</button>
+                <a href="/admin/user" class="btn btn-success mx-2">Back</a>
 
               </form:form>
             </div>
