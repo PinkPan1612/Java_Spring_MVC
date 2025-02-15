@@ -36,6 +36,22 @@ public class Order {
         return id;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<OrderDetail> getOrder_Details() {
+        return order_Details;
+    }
+
+    public void setOrder_Details(List<OrderDetail> order_Details) {
+        this.order_Details = order_Details;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
