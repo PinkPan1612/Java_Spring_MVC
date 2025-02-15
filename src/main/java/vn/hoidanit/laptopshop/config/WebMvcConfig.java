@@ -10,12 +10,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-@Configuration // Đánh dấu lớp này là một lớp cấu hình Spring
-@EnableWebMvc // Kích hoạt cấu hình Spring MVC mặc định
-public class WebMvcConfig implements WebMvcConfigurer { // Triển khai giao diện WebMvcConfigurer để tùy chỉnh cấu hình
-                                                        // Spring MVC
+@Configuration 
+@EnableWebMvc 
+public class WebMvcConfig implements WebMvcConfigurer { 
 
-    @Bean // Đánh dấu phương thức này để Spring quản lý và tạo bean
+    @Bean
     public ViewResolver viewResolver() {
         final InternalResourceViewResolver bean = new InternalResourceViewResolver(); // Tạo một
                                                                                       // InternalResourceViewResolver
@@ -35,6 +34,7 @@ public class WebMvcConfig implements WebMvcConfigurer { // Triển khai giao di�
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
         registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
+        registry.addResourceHandler("/images/**").addResourceLocations("/resources/images/");
     }
 
 }
