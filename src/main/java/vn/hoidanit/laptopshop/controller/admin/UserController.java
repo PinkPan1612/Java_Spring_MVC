@@ -1,5 +1,8 @@
 package vn.hoidanit.laptopshop.controller.admin;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -7,10 +10,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.servlet.ServletContext;
 
 import org.springframework.ui.Model;
 
+import vn.hoidanit.laptopshop.service.UploadService;
 import vn.hoidanit.laptopshop.service.UserService;
 import vn.hoidanit.laptopshop.domain.User;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +26,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class UserController {
     // DI: dependency injection
     private final UserService userService;
+    private final UploadService uploadService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UploadService uploadService) {
         this.userService = userService;
+        this.uploadService = uploadService;
     }
 
     // home Page
@@ -75,16 +84,21 @@ public class UserController {
     }
 
     // create user page
-    @RequestMapping("/admin/user/create") // GET
+    @GetMapping("/admin/user/create") // GET
     public String getCreateUserPage(Model model) {
         model.addAttribute("newUser", new User());
         return "admin/user/create";
     }
 
     // after click button create user
-    @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
-    public String createUserPage(Model mode, @ModelAttribute("newUser") User hoidanIT) {
-        this.userService.handleSaveUser(hoidanIT);
+    @PostMapping("/admin/user/create")
+    public String createUserPage(Model mode,
+            @ModelAttribute("newUser") User hoidanIT,
+            @RequestParam("hoidanitFile") MultipartFile file) {
+
+        String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
+        System.out.println("avatar = " + avatar);
+        // this.userService.handleSaveUser(hoidanIT);
         return "redirect:/admin/user";
     }
 
@@ -102,4 +116,7 @@ public class UserController {
         this.userService.deleteAUser(hoidanIT.getId());
         return "redirect:/admin/user";
     }
+
+    //
+
 }

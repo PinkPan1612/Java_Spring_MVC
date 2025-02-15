@@ -32,19 +32,16 @@
                     <div class="col-md-6 col-12 mx-auto">
                       <h3>Update a user</h3>
                       <hr />
-                      <form:form method="post" action="/admin/user/update" modelAttribute="user">
-                        <div class="mb-3" style="display: none;">
+                      <form:form class="row" method="post" action="/admin/user/update" modelAttribute="user">
+                        <div class="mb-3 col-md-6 col-12" style="display: none;">
                           <label class="form-label">Id: </label>
                           <form:input type="text" class="form-control" path="id" />
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 col-md-6 col-12">
                           <label class="form-label">Email:</label>
                           <form:input type="email" class="form-control" path="email" disabled="true" />
                         </div>
-                        <!-- <div>
-                                          <form:hidden path="password" />
-                                        </div> -->
-                        <div class="mb-3">
+                        <div class="mb-3 col-md-6 col-12">
                           <label class="form-label">Phone number:</label>
                           <form:input type="text" class="form-control" path="phone" />
                         </div>
@@ -56,8 +53,26 @@
                           <label class="form-label">Address:</label>
                           <form:input type="text" class="form-control" path="address" />
                         </div>
-                        <button type="submit" class="btn btn-warning">Update</button>
-                        <a href="/admin/user" class="btn btn-success mx-2">Back</a>
+                        <div class="col-md-6 col-12 mb-3">
+                          <label class="form-label">Role:</label>
+                          <select class="form-select" aria-label="Default select example">
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="USER">USER</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6 col-12 mb-3">
+                          <label for="avatarFile" class="form-label">Avatar:</label>
+                          <form:input class="form-control" type="file" path="avatar" accept=".png, .jpg, .jpeg"
+                            id="avatarFile" />
+                        </div>
+                        <div class="col-12 mb-3">
+                          <!-- dislay- none: ẩn tag cho đên khi được block -->
+                          <img style="max-height: 250px; display: none;" alt="avatar preview" id="avatarPreview" />
+                        </div>
+                        <div class="col-12 mb-5"><button type="submit" class="btn btn-warning">Update</button>
+                          <a href="/admin/user" class="btn btn-success mx-2">Back</a>
+                        </div>
+
 
                       </form:form>
                     </div>

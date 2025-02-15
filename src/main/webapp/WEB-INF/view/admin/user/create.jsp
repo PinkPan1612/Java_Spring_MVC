@@ -8,7 +8,7 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="Hỏi Dân IT - Dự án laptopshop" />
+        <meta name="description" content="Dự án laptopshop" />
         <meta name="author" content="Hỏi Dân IT" />
         <title>Create User</title>
         <link href="/css/styles.css" rel="stylesheet" />
@@ -45,7 +45,8 @@
                     <div class="col-md-6 col-12 mx-auto">
                       <h3>Create a user</h3>
                       <hr />
-                      <form:form class="row" method="post" action="/admin/user/create" modelAttribute="newUser">
+                      <form:form class="row" method="post" action="/admin/user/create" modelAttribute="newUser"
+                        enctype="multipart/form-data">
                         <div class="col-md-6 col-12 mb-3">
                           <label class="form-label">Email:</label>
                           <form:input type="email" class="form-control" path="email" />
@@ -68,15 +69,15 @@
                         </div>
                         <div class="col-md-6 col-12 mb-3">
                           <label class="form-label">Role:</label>
-                          <select class="form-select" aria-label="Default select example">
-                            <option value="ADMIN">ADMIN</option>
-                            <option value="USER">USER</option>
-                          </select>
+                          <form:select class="form-select" path="role.name">
+                            <form:option value="ADMIN">ADMIN</form:option>
+                            <form:option value="USER">USER</form:option>
+                          </form:select>
                         </div>
                         <div class="col-md-6 col-12 mb-3">
                           <label for="avatarFile" class="form-label">Avatar:</label>
-                          <form:input class="form-control" type="file" path="avatar" accept=".png, .jpg, .jpeg"
-                            id="avatarFile" />
+                          <input class="form-control" type="file" accept=".png, .jpg, .jpeg" id="avatarFile"
+                            name="hoidanitFile" />
                         </div>
                         <div class="col-12 mb-3">
                           <!-- dislay- none: ẩn tag cho đên khi được block -->
@@ -84,6 +85,7 @@
                         </div>
                         <div class="col-12 mb-5">
                           <button type="submit" class="btn btn-primary">Create</button>
+                          <a href="/admin/user" class="btn btn-success mx-2">Back</a>
                         </div>
                       </form:form>
                     </div>
