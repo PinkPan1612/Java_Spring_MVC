@@ -10,14 +10,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-@Configuration 
-@EnableWebMvc 
-public class WebMvcConfig implements WebMvcConfigurer { 
+@Configuration
+@EnableWebMvc
+public class WebMvcConfig implements WebMvcConfigurer {
 
     @Bean
     public ViewResolver viewResolver() {
-        final InternalResourceViewResolver bean = new InternalResourceViewResolver(); // Tạo một
-                                                                                      // InternalResourceViewResolver
+        final InternalResourceViewResolver bean = new InternalResourceViewResolver();
         bean.setViewClass(JstlView.class); // Sử dụng JSTL để render các view
         bean.setPrefix("/WEB-INF/view/"); // Đặt tiền tố cho đường dẫn tới các file view
         bean.setSuffix(".jsp"); // Đặt hậu tố cho các file view

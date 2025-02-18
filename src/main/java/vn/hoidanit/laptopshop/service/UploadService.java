@@ -22,13 +22,12 @@ public class UploadService {
         String finalName = "";
         try {
             byte[] bytes = file.getBytes();// lấy dữ liệu dưới dạng byte
-            // tìm nơi lưu file( trỏ tới thư mục avatar), sparator
-            // là dấu /
+            // tìm nơi lưu file( trỏ tới thư mục avatar),
+            // sparator là dấu /
             File dir = new File(rootPath + File.separator + targetFolder);
             if (!dir.exists()) // kiểm tra tồn tại
                 dir.mkdirs(); // nếu ko tồn tại thì tạo mới(make directory)
 
-            // Create the file on server
             // tạo mới tên file = thời gian hiện tại + tên file gốc
             finalName = System.currentTimeMillis() + "-" + file.getOriginalFilename();
             File serverFile = new File(dir.getAbsolutePath() + File.separator + finalName);
