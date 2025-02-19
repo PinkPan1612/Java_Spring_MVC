@@ -13,6 +13,19 @@
                 <title>Detail User</title>
                 <link href="/css/styles.css" rel="stylesheet" />
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+                <style>
+                    .avatar-container {
+                        position: relative;
+                        display: inline-block;
+                    }
+
+                    .avatar-container img {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        max-height: 250px;
+                    }
+                </style>
             </head>
 
             <body class="sb-nav-fixed">
@@ -44,6 +57,12 @@
                                                     <li class="list-group-item">FullName: ${user.fullName}</li>
                                                     <li class="list-group-item">Addess: ${user.address}</li>
                                                     <li class="list-group-item">Role: ${user.role.name}</li>
+                                                    <li class="list-group-item">Avatar:
+                                                        <div style="margin-left: 60px;">
+                                                            <img style="max-height: 250px;"
+                                                                src="/images/avatar/${user.avatar}" alt="avatarUser">
+                                                        </div>
+                                                    </li>
                                                 </ul>
                                             </div>
                                             <a href="/admin/user" class="btn btn-success mt-3">Back</a>
