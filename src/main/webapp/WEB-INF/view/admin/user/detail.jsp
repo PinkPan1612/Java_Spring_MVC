@@ -35,7 +35,7 @@
                                             </div>
                                             <hr />
                                             <div class="card" style="width: 60%;">
-                                                <div class="card-header">
+                                                <div class="card-header" style="font-weight: bolder;">
                                                     User Information
                                                 </div>
                                                 <ul class="list-group list-group-flush">
@@ -43,6 +43,7 @@
                                                     <li class="list-group-item">Email: ${user.email}</li>
                                                     <li class="list-group-item">FullName: ${user.fullName}</li>
                                                     <li class="list-group-item">Addess: ${user.address}</li>
+                                                    <li class="list-group-item">Role: ${user.role.name}</li>
                                                 </ul>
                                             </div>
                                             <a href="/admin/user" class="btn btn-success mt-3">Back</a>
@@ -56,7 +57,7 @@
                 </div>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
                     crossorigin="anonymous"></script>
-                <script src="js/scripts.js"></script>
+                <script src="/js/scripts.js"></script>
             </body>
 
             </html>

@@ -71,12 +71,17 @@ public class UserController {
 
     // after click button update user
     @PostMapping("/admin/user/update")
-    public String postUserUpdate(Model model, @ModelAttribute("user") User hoidanIT) {
+    public String postUserUpdate(Model model, @ModelAttribute("user") User hoidanIT,
+            @RequestParam("hoidanitFile") MultipartFile file) {
+
         User currentUser = this.userService.getUserById(hoidanIT.getId());
         if (currentUser != null) {
+            String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
             currentUser.setFullName(hoidanIT.getFullName());
             currentUser.setAddress(hoidanIT.getAddress());
             currentUser.setPhone(hoidanIT.getPhone());
+            currentUser.setAvatar(avatar);
+            currentUser.setRole(this.userService.getRoleByName(hoidanIT.getRole().getName()));
             // không cập nhật email vi email disable
             this.userService.handleSaveUser(currentUser);
         }

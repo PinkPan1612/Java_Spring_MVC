@@ -32,8 +32,9 @@
                     <div class="col-md-6 col-12 mx-auto">
                       <h3>Update a user</h3>
                       <hr />
-                      <form:form class="row" method="post" action="/admin/user/update" modelAttribute="user">
-                        <div class="mb-3 col-md-6 col-12" style="display: none;">
+                      <form:form class="row" method="post" action="/admin/user/update" modelAttribute="user"
+                        enctype="multipart/form-data">
+                        <div class=" mb-3 col-md-6 col-12" style="display: none;">
                           <label class="form-label">Id: </label>
                           <form:input type="text" class="form-control" path="id" />
                         </div>
@@ -55,15 +56,14 @@
                         </div>
                         <div class="col-md-6 col-12 mb-3">
                           <label class="form-label">Role:</label>
-                          <select class="form-select" aria-label="Default select example">
-                            <option value="ADMIN">ADMIN</option>
-                            <option value="USER">USER</option>
-                          </select>
+                          <form:select class="form-select" aria-label="Default select example" path="role.name">
+                            <form:option value="ADMIN">ADMIN</form:option>
+                            <form:option value="USER">USER</form:option>
+                          </form:select>
                         </div>
                         <div class="col-md-6 col-12 mb-3">
-                          <label for="avatarFile" class="form-label">Avatar:</label>
-                          <form:input class="form-control" type="file" path="avatar" accept=".png, .jpg, .jpeg"
-                            id="avatarFile" />
+                          <label class="form-label">Avatar:</label>
+                          <input class="form-control" type="file" accept=".png, .jpg, .jpeg" name="hoidanitFile" />
                         </div>
                         <div class="col-12 mb-3">
                           <!-- dislay- none: ẩn tag cho đên khi được block -->
@@ -85,7 +85,7 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
           crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
+        <script src="/js/scripts.js"></script>
       </body>
 
       </html>
