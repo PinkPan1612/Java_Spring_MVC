@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.Valid;
+
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import vn.hoidanit.laptopshop.service.UploadService;
 import vn.hoidanit.laptopshop.service.UserService;
@@ -94,17 +98,32 @@ public class UserController {
         return "admin/user/create";
     }
 
-    // after click button create user
     @PostMapping("/admin/user/create")
-    public String createUserPage(Model mode,
-            @ModelAttribute("newUser") User hoidanIT,
+    public String createUserPage(Model model,
+            @ModelAttribute("newUser") @Valid User hoidanIT, BindingResult bindingResult,
             @RequestParam("hoidanitFile") MultipartFile file) {
 
+        // Kiểm tra nếu có lỗi validation
+        if (bindingResult.hasErrors()) {
+            System.out.println("Validation failed. Errors:");
+
+            List<FieldError> errors = bindingResult.getFieldErrors();
+            for (FieldError error : errors) {
+                System.out.println("Field: " + error.getField() + " - Error: " + error.getDefaultMessage());
+            }
+
+            // Trả lại trang create với các thông tin lỗi để hiển thị trên giao diện
+            model.addAttribute("newUser", hoidanIT);
+            return "admin/user/create";
+        }
+
+        // Nếu không có lỗi, tiếp tục xử lý dữ liệu
         String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
         String hashPassword = this.passwordEncoder.encode(hoidanIT.getPassword());
         hoidanIT.setAvatar(avatar);
         hoidanIT.setPassword(hashPassword);
         hoidanIT.setRole(this.userService.getRoleByName(hoidanIT.getRole().getName()));
+
         this.userService.handleSaveUser(hoidanIT);
         return "redirect:/admin/user";
     }

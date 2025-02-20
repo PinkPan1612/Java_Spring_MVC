@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.validation.Valid;
 import vn.hoidanit.laptopshop.domain.Role;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.repository.RoleRepository;
@@ -34,7 +35,7 @@ public class UserService {
     }
 
     // save user
-    public User handleSaveUser(User user) {
+    public User handleSaveUser(@Valid User user) {
         User eric = this.userRepository.save(user);
         System.out.println(eric.toString());
         return eric;

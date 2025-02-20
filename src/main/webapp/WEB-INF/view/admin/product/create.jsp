@@ -48,7 +48,7 @@
                                             <h3>Create a product</h3>
                                             <hr />
                                             <form:form class="row" method="post" action="/admin/product/create"
-                                                modelAttribute="product" enctype="multipart/form-data">
+                                                modelAttribute="newProduct" enctype="multipart/form-data">
                                                 <div class="col-md-6 col-12 mb-3">
                                                     <label class="form-label">Name:</label>
                                                     <form:input type="text" class="form-control" path="name" />

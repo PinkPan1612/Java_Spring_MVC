@@ -21,22 +21,17 @@ public class ProductController {
     // create user page
     @GetMapping("/admin/product/create") // GET
     public String getCreateUserPage(Model model) {
-        model.addAttribute("product", new Product());
+        model.addAttribute("newProduct", new Product());
         return "admin/product/create";
     }
 
     // after click button create user
     @PostMapping("/admin/product/create")
     public String createProductPage(
-            @ModelAttribute("newUser") Product product,
+            @ModelAttribute("newProduct") Product product,
             @RequestParam("productFile") MultipartFile file) {
 
-        // String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
-        // String hashPassword = this.passwordEncoder.encode(hoidanIT.getPassword());
-        // hoidanIT.setAvatar(avatar);
-        // hoidanIT.setPassword(hashPassword);
-        // hoidanIT.setRole(this.userService.getRoleByName(hoidanIT.getRole().getName()));
-        // this.userService.handleSaveUser(hoidanIT);
+    
         return "redirect:/admin/product";
     }
 
