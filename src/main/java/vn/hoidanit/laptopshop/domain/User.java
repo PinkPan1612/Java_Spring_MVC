@@ -25,11 +25,11 @@ public class User {
     private long id;
 
     @NotBlank(message = "Email không được để trống")
-    @Email(message = "Email không đúng định dạng")
+    @Email(message = "Email không đúng định dạng", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
     private String email;
 
     @NotNull(message = "Mật khẩu không được để trống")
-    @Size(min = 3, message = "Mật khẩu phải có ít nhất 3 ký tự")
+    @Size(min = 6, message = "Mật khẩu phải có ít nhất 6 ký tự")
     private String password;
 
     @NotNull(message = "Tên đầy đủ không được để trống")

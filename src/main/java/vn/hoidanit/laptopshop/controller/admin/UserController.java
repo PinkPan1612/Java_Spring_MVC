@@ -100,20 +100,20 @@ public class UserController {
 
     @PostMapping("/admin/user/create")
     public String createUserPage(Model model,
-            @ModelAttribute("newUser") @Valid User hoidanIT, BindingResult bindingResult,
+            @ModelAttribute("newUser") @Valid User hoidanIT, BindingResult newUserBindingResult,
             @RequestParam("hoidanitFile") MultipartFile file) {
 
         // Kiểm tra nếu có lỗi validation
-        if (bindingResult.hasErrors()) {
+        if (newUserBindingResult.hasErrors()) {
             System.out.println("Validation failed. Errors:");
 
-            List<FieldError> errors = bindingResult.getFieldErrors();
+            List<FieldError> errors = newUserBindingResult.getFieldErrors();
             for (FieldError error : errors) {
                 System.out.println("Field: " + error.getField() + " - Error: " + error.getDefaultMessage());
             }
 
             // Trả lại trang create với các thông tin lỗi để hiển thị trên giao diện
-            model.addAttribute("newUser", hoidanIT);
+            // model.addAttribute("newUser", hoidanIT);
             return "admin/user/create";
         }
 
