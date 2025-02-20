@@ -11,4 +11,9 @@ public class HomePageController {
         return "/client/homepage/show";
     }
 
+    @GetMapping("/product")
+    public String getDetailPage() {
+        return "/client/product/detail";
+    }
+
 }
