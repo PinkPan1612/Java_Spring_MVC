@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import jakarta.validation.Valid;
 import vn.hoidanit.laptopshop.domain.Role;
 import vn.hoidanit.laptopshop.domain.User;
+import vn.hoidanit.laptopshop.domain.dto.RegisterDTO;
 import vn.hoidanit.laptopshop.repository.RoleRepository;
 import vn.hoidanit.laptopshop.repository.UserRepository;
 
@@ -62,5 +62,14 @@ public class UserService {
 
     public List<Role> getAllRoles() {
         return this.roleRepository.findAll();
+    }
+
+    //mapper
+    public User registerDTOtoUser(RegisterDTO registerDTO){
+        User newUser = new User();
+        newUser.setFullName(registerDTO.getFirstName() +" " + registerDTO.getLastName());
+        newUser.setEmail(registerDTO.getEmail());
+        newUser.setPassword(registerDTO.getPassword());
+        return newUser;
     }
 }
