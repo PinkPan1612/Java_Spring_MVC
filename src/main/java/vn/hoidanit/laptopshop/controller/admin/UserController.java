@@ -79,11 +79,13 @@ public class UserController {
 
         User currentUser = this.userService.getUserById(hoidanIT.getId());
         if (currentUser != null) {
-            String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
+            if (!file.isEmpty()) {
+                String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
+                currentUser.setAvatar(avatar);
+            }
             currentUser.setFullName(hoidanIT.getFullName());
             currentUser.setAddress(hoidanIT.getAddress());
             currentUser.setPhone(hoidanIT.getPhone());
-            currentUser.setAvatar(avatar);
             currentUser.setRole(this.userService.getRoleByName(hoidanIT.getRole().getName()));
             // không cập nhật email vi email disable
             this.userService.handleSaveUser(currentUser);
@@ -106,14 +108,6 @@ public class UserController {
         // Kiểm tra nếu có lỗi validation
         if (newUserBindingResult.hasErrors()) {
             System.out.println("Validation failed. Errors:");
-
-            List<FieldError> errors = newUserBindingResult.getFieldErrors();
-            for (FieldError error : errors) {
-                System.out.println("Field: " + error.getField() + " - Error: " + error.getDefaultMessage());
-            }
-
-            // Trả lại trang create với các thông tin lỗi để hiển thị trên giao diện
-            // model.addAttribute("newUser", hoidanIT);
             return "admin/user/create";
         }
 
@@ -142,7 +136,5 @@ public class UserController {
         this.userService.deleteAUser(hoidanIT.getId());
         return "redirect:/admin/user";
     }
-
-    //
 
 }

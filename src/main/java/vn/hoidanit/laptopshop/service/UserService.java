@@ -35,7 +35,7 @@ public class UserService {
     }
 
     // save user
-    public User handleSaveUser(@Valid User user) {
+    public User handleSaveUser(User user) {
         User eric = this.userRepository.save(user);
         System.out.println(eric.toString());
         return eric;
