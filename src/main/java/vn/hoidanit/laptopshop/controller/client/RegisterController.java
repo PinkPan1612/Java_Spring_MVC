@@ -1,8 +1,11 @@
 package vn.hoidanit.laptopshop.controller.client;
 
+import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.domain.dto.RegisterDTO;
 import vn.hoidanit.laptopshop.service.UserService;
+
+import java.util.List;
 
 @Controller
 public class RegisterController {
@@ -28,7 +33,13 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String postRegister(@ModelAttribute("registerUser") RegisterDTO registerDTO) {
+    public String postRegister(@ModelAttribute("registerUser") @Valid RegisterDTO registerDTO,
+                               BindingResult bindingResult) {
+        List<FieldError> errors = bindingResult.getFieldErrors();
+        for (FieldError error : errors) {
+            System.out.println("Field: " + error.getField() + " - Error: " +
+                    error.getDefaultMessage());
+        }
         String hashPassword = this.passwordEncoder.encode(registerDTO.getPassword());
         User user = this.userService.registerDTOtoUser(registerDTO);
         user.setPassword(hashPassword);
