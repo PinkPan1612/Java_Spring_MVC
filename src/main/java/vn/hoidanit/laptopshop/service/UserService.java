@@ -65,11 +65,15 @@ public class UserService {
     }
 
     //mapper
-    public User registerDTOtoUser(RegisterDTO registerDTO){
+    public User registerDTOtoUser(RegisterDTO registerDTO) {
         User newUser = new User();
-        newUser.setFullName(registerDTO.getFirstName() +" " + registerDTO.getLastName());
+        newUser.setFullName(registerDTO.getFirstName() + " " + registerDTO.getLastName());
         newUser.setEmail(registerDTO.getEmail());
         newUser.setPassword(registerDTO.getPassword());
         return newUser;
+    }
+
+    public boolean checkEmailExist(String email) {
+        return this.userRepository.existsByEmail(email);
     }
 }
