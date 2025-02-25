@@ -29,7 +29,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     public UserController(UserService userService, UploadService uploadService,
-            PasswordEncoder passwordEncoder) {
+                          PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.uploadService = uploadService;
         this.passwordEncoder = passwordEncoder;
@@ -74,7 +74,7 @@ public class UserController {
     // after click button update user
     @PostMapping("/admin/user/update")
     public String postUserUpdate(Model model, @ModelAttribute("user") User hoidanIT,
-            @RequestParam("hoidanitFile") MultipartFile file) {
+                                 @RequestParam("hoidanitFile") MultipartFile file) {
 
         User currentUser = this.userService.getUserById(hoidanIT.getId());
         if (currentUser != null) {
@@ -101,8 +101,8 @@ public class UserController {
 
     @PostMapping("/admin/user/create")
     public String createUserPage(Model model,
-            @ModelAttribute("newUser") @Valid User hoidanIT, BindingResult newUserBindingResult,
-            @RequestParam("hoidanitFile") MultipartFile file) {
+                                 @ModelAttribute("newUser") @Valid User hoidanIT, BindingResult newUserBindingResult,
+                                 @RequestParam("hoidanitFile") MultipartFile file) {
 
         // Kiểm tra nếu có lỗi validation
         if (newUserBindingResult.hasErrors()) {
