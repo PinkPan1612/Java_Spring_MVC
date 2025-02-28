@@ -28,8 +28,7 @@ public class User {
     private String email;
 
     @NotNull(message = "Mật khẩu không được để trống")
-    @Size(min = 2, message = "Mật khẩu phải có ít nhất 2 ký tự")
-    @StrongPassword(message = "pass phải có ít nhất 6 kí tự")
+    @StrongPassword(message = "Mật khẩu không đủ mạnh. Vui lòng nhập ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.")
     private String password;
 
     @NotNull(message = "Tên đầy đủ không được để trống")

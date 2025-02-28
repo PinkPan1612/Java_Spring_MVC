@@ -20,7 +20,7 @@ public class ItemController {
         Product product = productService.handleGetOneProductById(id).get();
         model.addAttribute("product", product);
         model.addAttribute("id", id);
-        return "/client/product/detail";
+        return "client/product/detail";
     }
 
 }
