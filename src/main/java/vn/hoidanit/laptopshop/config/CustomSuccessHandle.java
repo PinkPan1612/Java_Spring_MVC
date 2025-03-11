@@ -16,20 +16,41 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import vn.hoidanit.laptopshop.domain.User;
+import vn.hoidanit.laptopshop.service.UserService;
 
+// Lớp AuthenticationSuccessHanlde giúp điều hướng đến url mong muốn sau khi login
 public class CustomSuccessHandle implements AuthenticationSuccessHandler {
 
-    protected void clearAuthenticationAttributes(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+    private UserService userService;
+
+    public CustomSuccessHandle(UserService userService) {
+        this.userService = userService;
+    }
+
+    // hàm giúp xóa thông tin lỗi trước đó
+    protected void clearAuthenticationAttributes(HttpServletRequest request, Authentication authentication) {
+        HttpSession session = request.getSession(false); // sesstion // false có ý nghĩa rằng: không có session thì
+                                                         // không thực hiện hàm
+        String email = authentication.getName();
         if (session == null) {
             return;
         }
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+
+        User user = userService.getUserByEmail(email);
+        if (email != null) {
+            session.setAttribute("fullName", user.getFullName());
+            session.setAttribute("avatar", user.getAvatar());
+        }
+
     }
 
+    // methd kiếm tra role để quyết định url hướng đến(targetURL)
     protected String determineTargetUrl(final Authentication authentication) {
 
         Map<String, String> roleTargetUrlMap = new HashMap<>();
+
         roleTargetUrlMap.put("ROLE_USER", "/");
         roleTargetUrlMap.put("ROLE_ADMIN", "/admin");
 
@@ -41,14 +62,16 @@ public class CustomSuccessHandle implements AuthenticationSuccessHandler {
             }
         }
 
-        throw new IllegalStateException();
+        throw new IllegalStateException(); // ném ra lỗi nếu không role nào phù hợp
     }
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
+    // ghi đè lại hàm gốc
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
+        // target: chứa thông tin địa chỉ đích
         String targetUrl = determineTargetUrl(authentication);
 
         if (response.isCommitted()) {
@@ -56,8 +79,8 @@ public class CustomSuccessHandle implements AuthenticationSuccessHandler {
             return;
         }
 
-        redirectStrategy.sendRedirect(request, response, targetUrl);
-        clearAuthenticationAttributes(request);
+        redirectStrategy.sendRedirect(request, response, targetUrl); // redirect
+        clearAuthenticationAttributes(request, authentication);
     }
 
 }

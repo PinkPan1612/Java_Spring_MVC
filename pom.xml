@@ -91,6 +91,13 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- session -->
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-jdbc</artifactId>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
