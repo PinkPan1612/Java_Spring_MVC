@@ -10,7 +10,7 @@
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <span style="color: white;">Chào mừng:
-                    <c:out value="${pageContext.request.userPrincipal.name}" />
+                    <c:out value="${sessionScope.fullName}" />
                 </span>
             </form>
             <!-- Navbar-->
@@ -21,9 +21,9 @@
                     <ul class="dropdown-menu dropdown-menu-end p-4" aria-labelledby="navbarDropdown">
                         <li class="d-flex align-items-center flex-column" style="min-width: 300px;">
                             <img style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden;"
-                                src="/images/product/1711078092373-asus-01.png" />
+                                src="/images/avatar/${sessionScope.avatar}" />
                             <div class="text-center my-3">
-                                <c:out value="${pageContext.request.userPrincipal.name}" />
+                                <c:out value="${sessionScope.fullName}" />
                             </div>
                         </li>
                         <li>
@@ -31,7 +31,7 @@
                         </li>
                         <li><a class="dropdown-item" href="#!">Cài đặt</a></li>
 
-                        <li>    
+                        <li>
                             <hr class="dropdown-divider" />
                         </li>
                         <li>

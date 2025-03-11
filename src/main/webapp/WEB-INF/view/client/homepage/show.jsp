@@ -17,7 +17,7 @@
                     rel="stylesheet">
 
                 <!-- Icon Font Stylesheet -->
-                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
                     rel="stylesheet">
 
@@ -91,17 +91,24 @@
                                                                     <a href="/product/${product.id}">${product.name}</a>
                                                                 </h4>
                                                                 <p style="font-size: 13px">${product.shortDesc}</p>
-                                                                <div
-                                                                    class="d-flex justify-content-between flex-lg-wrap">
+                                                                <div class="d-flex justify-content-center flex-lg-wrap">
                                                                     <p style="font-size: 15px; text-align: center; width: 100%"
                                                                         class="text-dark fw-bold mb-3">
                                                                         <fmt:formatNumber type="number"
                                                                             value="${product.price}" /> đ
                                                                     </p>
-                                                                    <a href="#"
-                                                                        class=" mx-auto btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                                            class="fa fa-shopping-bag me-2 text-primary"></i>
-                                                                        Add to cart</a>
+                                                                    <form action="/add-product-to-cart/${product.id}"
+                                                                        method="post">
+                                                                        <div>
+                                                                            <input type="hidden"
+                                                                                name="${_csrf.parameterName}"
+                                                                                value="${_csrf.token}" />
+                                                                        </div>
+                                                                        <button
+                                                                            class=" mx-auto btn border border-secondary rounded-pill px-3 text-primary"><i
+                                                                                class="fa fa-shopping-bag me-2 text-primary"></i>
+                                                                            Add to cart</button>
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         </div>
