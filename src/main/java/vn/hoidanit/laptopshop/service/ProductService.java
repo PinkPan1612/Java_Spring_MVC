@@ -1,8 +1,9 @@
 package vn.hoidanit.laptopshop.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,16 +15,19 @@ import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.repository.CartDetailRepository;
 import vn.hoidanit.laptopshop.repository.CartRepository;
 import vn.hoidanit.laptopshop.repository.ProductRepository;
+import vn.hoidanit.laptopshop.repository.UserRepository;
 
 @Service
 public class ProductService {
+
     private final ProductRepository productRepository;
     private final CartDetailRepository cartDetailRepository;
     private final CartRepository cartRepository;
     private final UserService userService;
 
     public ProductService(ProductRepository productRepository, CartDetailRepository cartDetailRepository,
-            CartRepository cartRepository, UserService userService) {
+            CartRepository cartRepository, UserService userService, UserRepository userRepository,
+            DaoAuthenticationProvider authProvider) {
         this.productRepository = productRepository;
         this.cartDetailRepository = cartDetailRepository;
         this.cartRepository = cartRepository;
@@ -57,8 +61,7 @@ public class ProductService {
     }
 
     public void handleAddProductToCart(String email, long productId, HttpServletRequest request) {
-        HttpSession session = request.getSession(false); 
-
+        HttpSession session = request.getSession(false);
 
         User user = this.userService.getUserByEmail(email);
         if (user != null) {
@@ -110,5 +113,17 @@ public class ProductService {
         }
 
         // lưu cart_detail
+    }
+
+    public double totalPriceInOneCart(List<CartDetail> listCartDetail) {
+        double totalCart = 0;
+        for (CartDetail cd : listCartDetail) {
+            totalCart += cd.getPrice() * cd.getQuantity();
+        }
+        return totalCart;
+    }
+
+    public Cart fetchByUser(User user) {
+        return this.cartRepository.findByUser(user);
     }
 }
