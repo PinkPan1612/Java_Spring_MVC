@@ -1,6 +1,7 @@
 package vn.hoidanit.laptopshop.controller.admin;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -82,8 +83,8 @@ public class ProductController {
 
     @GetMapping("/admin/product/update/{id}")
     public String getProductUpdatePage(Model model, @PathVariable long id) {
-        Product product = this.productService.handleGetOneProductById(id).get();
-        model.addAttribute("updateProduct", product);
+        Optional<Product> currentproduct = this.productService.handleGetOneProductById(id);
+        model.addAttribute("updateProduct", currentproduct.get());
         return "admin/product/update";
     }
 
