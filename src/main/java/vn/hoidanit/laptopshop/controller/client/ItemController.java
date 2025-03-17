@@ -2,16 +2,17 @@ package vn.hoidanit.laptopshop.controller.client;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
+import vn.hoidanit.laptopshop.controller.admin.ProductController;
 import vn.hoidanit.laptopshop.domain.Cart;
 import vn.hoidanit.laptopshop.domain.CartDetail;
 import vn.hoidanit.laptopshop.domain.Product;
 import vn.hoidanit.laptopshop.domain.User;
+import vn.hoidanit.laptopshop.repository.CartDetailRepository;
 import vn.hoidanit.laptopshop.service.ProductService;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -20,10 +21,18 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ItemController {
+
+    private final ProductController productController;
+
+    private final CartDetailRepository cartDetailRepository;
     private final ProductService productService;
 
-    public ItemController(ProductService productService) {
+    public ItemController(ProductService productService, CartDetailRepository cartDetailRepository,
+            ProductController productController) {
         this.productService = productService;
+
+        this.cartDetailRepository = cartDetailRepository;
+        this.productController = productController;
     }
 
     @GetMapping("/product/{id}")
@@ -66,6 +75,15 @@ public class ItemController {
         model.addAttribute("totalCart", totalCart);
 
         return "client/cart/show";
+    }
+
+    @PostMapping("/delete-cart-detail/{id}")
+    public String deleteCartDetail(@PathVariable long id, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        CartDetail cartdetail = this.productService.fetchCartDetailByID(id);
+        Cart currentCart = cartdetail.getCart();
+        this.productService.handleDeleteCartDetail(cartdetail, currentCart, session);
+        return "redirect:/cart";
     }
 
 }

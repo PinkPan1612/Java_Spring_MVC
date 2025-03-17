@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +21,12 @@ import vn.hoidanit.laptopshop.repository.UserRepository;
 @Service
 public class ProductService {
 
+    private final CustomUserDetailsService customUserDetailsService;
+
+    private final AuthenticationSuccessHandler customSuccessHandler;
+
+    private final DaoAuthenticationProvider authProvider;
+
     private final ProductRepository productRepository;
     private final CartDetailRepository cartDetailRepository;
     private final CartRepository cartRepository;
@@ -27,11 +34,15 @@ public class ProductService {
 
     public ProductService(ProductRepository productRepository, CartDetailRepository cartDetailRepository,
             CartRepository cartRepository, UserService userService, UserRepository userRepository,
-            DaoAuthenticationProvider authProvider) {
+            DaoAuthenticationProvider authProvider, AuthenticationSuccessHandler customSuccessHandler,
+            CustomUserDetailsService customUserDetailsService) {
         this.productRepository = productRepository;
         this.cartDetailRepository = cartDetailRepository;
         this.cartRepository = cartRepository;
         this.userService = userService;
+        this.authProvider = authProvider;
+        this.customSuccessHandler = customSuccessHandler;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     // save product
@@ -123,7 +134,42 @@ public class ProductService {
         return totalCart;
     }
 
+    // fetchCartByUser
     public Cart fetchByUser(User user) {
         return this.cartRepository.findByUser(user);
+    }
+
+    // fetchCartDetailByID
+    public CartDetail fetchCartDetailByID(long id) {
+        return this.cartDetailRepository.findById(id).get();
+    }
+
+    // delete cart detail
+    public void handleDeleteCartDetail(CartDetail cartDetail, Cart cart, HttpSession session) {
+        int sum = 0;
+        try {
+            this.cartDetailRepository.delete(cartDetail);
+            if (cart.getSum() > 1) {
+                sum += cart.getSum() - 1;
+                cart.setSum(sum);
+                this.cartRepository.save(cart);
+                session.setAttribute("sum", sum);
+            } else if (cart.getSum() == 1) {
+                this.cartRepository.delete(cart);
+                session.setAttribute("sum", 0);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    // save cart
+    public void hanldeSaveCart(Cart cart) {
+        this.cartRepository.save(cart);
+    }
+
+    // delete cart
+    public void hanldeDeleteCart(Cart cart) {
+        this.cartRepository.delete(cart);
     }
 }
