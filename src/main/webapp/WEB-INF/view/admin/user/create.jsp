@@ -95,7 +95,7 @@
                         <div class="col-md-6 col-12 mb-3">
                           <label for="avatarFile" class="form-label">Avatar:</label>
                           <input class="form-control" type="file" accept=".png, .jpg, .jpeg" id="avatarFile"
-                            name="hoidanitFile" />
+                            name="rawuyFile" />
                         </div>
                         <div class="col-12 mb-3">
                           <!-- dislay- none: ẩn tag cho đên khi được block -->

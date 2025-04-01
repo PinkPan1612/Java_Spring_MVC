@@ -75,7 +75,7 @@
                         </div>
                         <div class="col-md-6 col-12 mb-3">
                           <label class="form-label">Avatar:</label>
-                          <input class="form-control" type="file" accept=".png, .jpg, .jpeg" name="hoidanitFile"
+                          <input class="form-control" type="file" accept=".png, .jpg, .jpeg" name="rawuyFile"
                             id="avatarFile" />
                         </div>
                         <div class="col-12 mb-3">

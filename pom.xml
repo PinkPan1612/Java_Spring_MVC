@@ -10,7 +10,7 @@
 		<relativePath/>
 	</parent>
 
-	<groupId>vn.hoidanit</groupId>
+	<groupId>vn.rawuy</groupId>
 	<artifactId>laptopshop</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>laptopshop</name>
