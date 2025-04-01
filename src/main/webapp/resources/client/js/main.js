@@ -167,18 +167,20 @@
         const input = button.parent().parent().find('input');
         input.val(newVal);
 
-        // //set form index
-        // const index = input.attr("data-cart-detail-index")
-        // const el = document.getElementById(`cartDetails${index}.quantity`);
-        // $(el).val(newVal);
+        //set form index
+        const index = input.attr("data-cart-detail-index")
+        const el = document.getElementById(`cartDetails${index}.quantity`);
+        $(el).val(newVal);
 
-        //get price 
+
+
+        //get price
         const price = input.attr("data-cart-detail-price");
         const id = input.attr("data-cart-detail-id");
 
         const priceElement = $(`p[data-cart-detail-id='${id}']`);
         if (priceElement) {
-            const newPrice = (+price) * newVal;
+            const newPrice = +price * newVal;
             priceElement.text(formatCurrency(newPrice.toFixed(2)) + " đ");
         }
 
@@ -194,12 +196,12 @@
                 newTotal = change * (+price) + (+currentTotal);
             }
 
-            //reset change 
+            //reset change
             change = 0;
 
             //update
             totalPriceElement?.each(function (index, element) {
-                //update text 
+                //update text
                 $(totalPriceElement[index]).text(formatCurrency(newTotal.toFixed(2)) + " đ");
 
                 //update data-attribute
@@ -209,8 +211,8 @@
     });
 
     function formatCurrency(value) {
-        // use the'vi-VN' locale to format  the number according to Vietnamese currency form 
-        // and 'VND' as the currency type for VN đồng
+        // Use the 'vi-VN' locale to format the number according to Vietnamese currency format
+        // and 'VND' as the currency type for Vietnamese đồng
         const formatter = new Intl.NumberFormat('vi-VN', {
             style: 'decimal',
             minimumFractionDigits: 0, // No decimal part for whole numbers

@@ -1,12 +1,8 @@
 package vn.hoidanit.laptopshop.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import vn.hoidanit.laptopshop.domain.Cart;
@@ -21,28 +17,17 @@ import vn.hoidanit.laptopshop.repository.UserRepository;
 @Service
 public class ProductService {
 
-    private final CustomUserDetailsService customUserDetailsService;
-
-    private final AuthenticationSuccessHandler customSuccessHandler;
-
-    private final DaoAuthenticationProvider authProvider;
-
     private final ProductRepository productRepository;
     private final CartDetailRepository cartDetailRepository;
     private final CartRepository cartRepository;
     private final UserService userService;
 
     public ProductService(ProductRepository productRepository, CartDetailRepository cartDetailRepository,
-            CartRepository cartRepository, UserService userService, UserRepository userRepository,
-            DaoAuthenticationProvider authProvider, AuthenticationSuccessHandler customSuccessHandler,
-            CustomUserDetailsService customUserDetailsService) {
+            CartRepository cartRepository, UserService userService, UserRepository userRepository) {
         this.productRepository = productRepository;
         this.cartDetailRepository = cartDetailRepository;
         this.cartRepository = cartRepository;
         this.userService = userService;
-        this.authProvider = authProvider;
-        this.customSuccessHandler = customSuccessHandler;
-        this.customUserDetailsService = customUserDetailsService;
     }
 
     // save product
@@ -171,5 +156,18 @@ public class ProductService {
     // delete cart
     public void hanldeDeleteCart(Cart cart) {
         this.cartRepository.delete(cart);
+    }
+
+    // handle Update before checkout
+    public void handleUpdateBeforeCheckout(List<CartDetail> cartDetails) {
+        for (CartDetail cartDetail : cartDetails) {
+            Optional<CartDetail> cdOptional = this.cartDetailRepository.findById(cartDetail.getId());
+            if (cdOptional.isPresent()) {
+                CartDetail currentCD = cdOptional.get();
+                currentCD.setQuantity(cartDetail.getQuantity());
+                this.cartDetailRepository.save(currentCD);
+            }
+        }
+
     }
 }

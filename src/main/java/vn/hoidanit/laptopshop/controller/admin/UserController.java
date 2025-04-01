@@ -35,15 +35,15 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // home Page
-    @RequestMapping("/")
-    public String getHomePage(Model model) {
-        // List<User> arrUsers = this.userService.getAllUsersByEmail("2@gmail.com");
-        // System.out.println(arrUsers);
-        model.addAttribute("text", "text");
-        model.addAttribute("name", "from controller with model");
-        return "hello";
-    }
+    // // home Page
+    // @RequestMapping("/")
+    // public String getHomePage(Model model) {
+    //     // List<User> arrUsers = this.userService.getAllUsersByEmail("2@gmail.com");
+    //     // System.out.println(arrUsers);
+    //     model.addAttribute("text", "text");
+    //     model.addAttribute("name", "from controller with model");
+    //     return "hello";
+    // }
 
     // table user
     @RequestMapping("/admin/user")
