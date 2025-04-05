@@ -7,10 +7,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import vn.rawuy.laptopshop.domain.Cart;
 import vn.rawuy.laptopshop.domain.CartDetail;
+import vn.rawuy.laptopshop.domain.Order;
+import vn.rawuy.laptopshop.domain.OrderDetail;
 import vn.rawuy.laptopshop.domain.Product;
 import vn.rawuy.laptopshop.domain.User;
 import vn.rawuy.laptopshop.repository.CartDetailRepository;
 import vn.rawuy.laptopshop.repository.CartRepository;
+import vn.rawuy.laptopshop.repository.OrderDetailRepository;
+import vn.rawuy.laptopshop.repository.OrderRepository;
 import vn.rawuy.laptopshop.repository.ProductRepository;
 import vn.rawuy.laptopshop.repository.UserRepository;
 
@@ -21,13 +25,18 @@ public class ProductService {
     private final CartDetailRepository cartDetailRepository;
     private final CartRepository cartRepository;
     private final UserService userService;
+    private final OrderRepository orderRepsitory;
+    private final OrderDetailRepository orderDetailRepository;
 
     public ProductService(ProductRepository productRepository, CartDetailRepository cartDetailRepository,
-            CartRepository cartRepository, UserService userService, UserRepository userRepository) {
+            CartRepository cartRepository, UserService userService, UserRepository userRepository,
+            OrderRepository orderRepsitory, OrderDetailRepository orderDetailRepository) {
         this.productRepository = productRepository;
         this.cartDetailRepository = cartDetailRepository;
         this.cartRepository = cartRepository;
         this.userService = userService;
+        this.orderRepsitory = orderRepsitory;
+        this.orderDetailRepository = orderDetailRepository;
     }
 
     // save product
@@ -158,7 +167,7 @@ public class ProductService {
         this.cartRepository.delete(cart);
     }
 
-    // handle Update before checkout
+    // handle Update before checkout (save new quantity in product detail)
     public void handleUpdateBeforeCheckout(List<CartDetail> cartDetails) {
         for (CartDetail cartDetail : cartDetails) {
             Optional<CartDetail> cdOptional = this.cartDetailRepository.findById(cartDetail.getId());
@@ -167,6 +176,42 @@ public class ProductService {
                 currentCD.setQuantity(cartDetail.getQuantity());
                 this.cartDetailRepository.save(currentCD);
             }
+        }
+
+    }
+
+    public void handlePlaceOrder(User user, HttpSession session, String receiverName, String receiverAddress,
+            String receiverPhone) {
+        // create new order
+        Order neworder = new Order();
+
+        neworder.setUser(user);
+        neworder.setReceiverName(receiverName);
+        neworder.setReceiverAddress(receiverAddress);
+        neworder.setReceiverPhone(receiverPhone);
+        neworder = this.orderRepsitory.save(neworder);
+
+        // step 1: get cart by user
+        Cart cart = this.cartRepository.findByUser(user);
+        
+        List<CartDetail> cartDetails = cart.getCartDetails();
+        if (cartDetails != null) {
+            for (CartDetail cd : cartDetails) {
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.setOrder(neworder);
+                orderDetail.setProduct(cd.getProduct());
+                orderDetail.setPrice(cd.getPrice());
+                orderDetail.setQuanlity(cd.getQuantity());
+
+                this.orderDetailRepository.save(orderDetail);
+            }
+            // step 2: delete cart detail and cart
+            for (CartDetail cd : cartDetails) {
+                this.cartDetailRepository.delete(cd);
+            }
+            this.cartRepository.delete(cart);
+            // step 3: update session
+            session.setAttribute("sum", 0);
         }
 
     }
