@@ -51,7 +51,10 @@
                                                     <c:forEach var="order" items="${orders}">
                                                         <tr>
                                                             <th>${order.id}</th>
-                                                            <td>${order.totalPrice}</td>
+                                                            <td>
+                                                                <fmt:formatNumber type="number"
+                                                                    value="${order.totalPrice}" /> đ
+                                                            </td>
                                                             <td>
                                                                 ${order.receiverName}
                                                             </td>

@@ -40,7 +40,8 @@
                                                 <div>
                                                     <c:choose>
                                                         <c:when test="${not empty product.image}">
-                                                            <img class="card-img-top"
+                                                            <img class="card-img-top "
+                                                                style="width: 400px; height: auto;"
                                                                 src="/images/product/${product.image}"
                                                                 alt="imageProduct">
                                                         </c:when>

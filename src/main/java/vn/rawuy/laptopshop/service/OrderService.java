@@ -39,12 +39,13 @@ public class OrderService {
         Order order = this.orderRepository.findById(id);
         List<OrderDetail> orderDetails = this.orderDetailService.getAllOrderDetailsByOrderID(order);
 
-        for (OrderDetail orderDetail : orderDetails) {
-            this.orderDetailService.deleteOrderDetail(orderDetail);
+        if (orderDetails != null) {
+            for (OrderDetail orderDetail : orderDetails) {
+                this.orderDetailService.deleteOrderDetail(orderDetail);
 
+            }
+            this.orderRepository.deleteById(id);
         }
-
-        this.orderRepository.deleteById(id);
     }
 
 }

@@ -38,7 +38,7 @@
                                             <div class="card" style="width: 60%;">
                                                 <div>
                                                     <img class="card-img-top" src="/images/avatar/${user.avatar}"
-                                                        alt="avatarUser">
+                                                        alt="avatarUser" style="width: 300px; height: auto;">
                                                 </div>
                                                 <div class="card-header" style="font-weight: bolder;">
                                                     User Information
