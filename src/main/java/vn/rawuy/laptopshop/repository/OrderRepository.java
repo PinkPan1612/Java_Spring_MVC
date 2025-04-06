@@ -10,5 +10,6 @@ import vn.rawuy.laptopshop.domain.User;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Order findByUser(User user);
+    Order findById(long id);
 
 }

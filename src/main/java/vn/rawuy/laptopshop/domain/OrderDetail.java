@@ -13,7 +13,7 @@ public class OrderDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private long quanlity;
+    private long quantity;
     private double price;
 
     // order_id: long
@@ -34,12 +34,12 @@ public class OrderDetail {
         this.id = id;
     }
 
-    public long getQuanlity() {
-        return quanlity;
+    public long getQuantity() {
+        return quantity;
     }
 
-    public void setQuanlity(long quanlity) {
-        this.quanlity = quanlity;
+    public void setQuantity(long quanlity) {
+        this.quantity = quanlity;
     }
 
     public double getPrice() {

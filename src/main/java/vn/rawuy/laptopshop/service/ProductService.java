@@ -182,36 +182,46 @@ public class ProductService {
 
     public void handlePlaceOrder(User user, HttpSession session, String receiverName, String receiverAddress,
             String receiverPhone) {
-        // create new order
-        Order neworder = new Order();
-
-        neworder.setUser(user);
-        neworder.setReceiverName(receiverName);
-        neworder.setReceiverAddress(receiverAddress);
-        neworder.setReceiverPhone(receiverPhone);
-        neworder = this.orderRepsitory.save(neworder);
-
         // step 1: get cart by user
         Cart cart = this.cartRepository.findByUser(user);
-        
-        List<CartDetail> cartDetails = cart.getCartDetails();
-        if (cartDetails != null) {
-            for (CartDetail cd : cartDetails) {
-                OrderDetail orderDetail = new OrderDetail();
-                orderDetail.setOrder(neworder);
-                orderDetail.setProduct(cd.getProduct());
-                orderDetail.setPrice(cd.getPrice());
-                orderDetail.setQuanlity(cd.getQuantity());
+        if (cart != null) {
+            List<CartDetail> cartDetails = cart.getCartDetails();
+            if (cartDetails != null) {
+                // create new order
+                Order neworder = new Order();
 
-                this.orderDetailRepository.save(orderDetail);
+                neworder.setUser(user);
+                neworder.setReceiverName(receiverName);
+                neworder.setReceiverAddress(receiverAddress);
+                neworder.setReceiverPhone(receiverPhone);
+                neworder.setStatus("PENDING");
+
+                double totalPrice = 0;
+                for (CartDetail cd : cartDetails) {
+                    totalPrice += cd.getPrice() * cd.getQuantity();
+                }
+                neworder.setTotalPrice(totalPrice);
+                // save order to db
+                neworder = this.orderRepsitory.save(neworder);
+
+                // CREATE ORDER DETAIL
+                for (CartDetail cd : cartDetails) {
+                    OrderDetail orderDetail = new OrderDetail();
+                    orderDetail.setOrder(neworder);
+                    orderDetail.setProduct(cd.getProduct());
+                    orderDetail.setPrice(cd.getPrice());
+                    orderDetail.setQuantity(cd.getQuantity());
+
+                    this.orderDetailRepository.save(orderDetail);
+                }
+                // step 2: delete cart detail and cart
+                for (CartDetail cd : cartDetails) {
+                    this.cartDetailRepository.delete(cd);
+                }
+                this.cartRepository.delete(cart);
+                // step 3: update session
+                session.setAttribute("sum", 0);
             }
-            // step 2: delete cart detail and cart
-            for (CartDetail cd : cartDetails) {
-                this.cartDetailRepository.delete(cd);
-            }
-            this.cartRepository.delete(cart);
-            // step 3: update session
-            session.setAttribute("sum", 0);
         }
 
     }
