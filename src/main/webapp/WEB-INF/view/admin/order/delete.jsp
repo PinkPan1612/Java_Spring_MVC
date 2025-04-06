@@ -10,7 +10,7 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
                 <meta name="description" content="Rawuy - Dự án laptopshop" />
                 <meta name="author" content="Rawuy" />
-                <title>Delete User</title>
+                <title>Delete Order</title>
                 <link href="/css/styles.css" rel="stylesheet" />
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
             </head>
@@ -22,26 +22,28 @@
                     <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid px-4">
-                                <h1 class="mt-4">Manage Users</h1>
+                                <h1 class="mt-4">Manage Orders</h1>
                                 <ol class="breadcrumb mb-4">
                                     <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="/admin/user">Users</a></li>
+                                    <li class="breadcrumb-item"><a href="/admin/orders">Orders</a></li>
                                     <li class="breadcrumb-item active">Delete</li>
                                 </ol>
                                 <div class="mt-5">
                                     <div class="row">
                                         <div class="col-12 mx-auto">
-                                            <h3>Delete a user with id = ${id}</h3>
+                                            <h3>Delete a order with id = ${id}</h3>
                                             <hr />
                                             <div class="alert alert-danger" role="alert">
                                                 <p>
-                                                    Do you want to delete user with <span style="font-weight: bold;">id:
+                                                    Do you want to delete order with <span
+                                                        style="font-weight: bold;">id:
                                                         ${id}</span>?
                                                     <br>
                                                     This action cannot be undone.
                                                 </p>
                                             </div>
-                                            <form:form action="/admin/user/delete" method="post" modelAttribute="user">
+                                            <form:form action="/admin/order/delete" method="post"
+                                                modelAttribute="order">
                                                 <div class="mb-3" style="display: none;">
                                                     <label class="form-label">Id: </label>
                                                     <form:input value="${id}" type="text" class="form-control"
@@ -50,7 +52,7 @@
                                                 <div class="mx-2">
                                                     <button class="btn btn-danger">Confirm
                                                         Delete</button>
-                                                    <a href="/admin/user" class="btn btn-success mx-2">Back</a>
+                                                    <a href="/admin/orders" class="btn btn-success mx-2">Back</a>
                                                 </div>
 
                                             </form:form>

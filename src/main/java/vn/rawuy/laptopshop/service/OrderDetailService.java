@@ -16,11 +16,13 @@ public class OrderDetailService {
         this.orderDetailRepository = orderDetailRepository;
     }
 
-    public void deleteOrderDetailById(Long id) {
-        orderDetailRepository.deleteById(id);
-    }
-
+    // get all
     public List<OrderDetail> getAllOrderDetailsByOrderID(Order order) {
         return orderDetailRepository.findByOrder(order);
+    }
+
+    // delete all order details by order id
+    public void deleteOrderDetail(OrderDetail orderDetail) {
+        this.orderDetailRepository.delete(orderDetail);
     }
 }

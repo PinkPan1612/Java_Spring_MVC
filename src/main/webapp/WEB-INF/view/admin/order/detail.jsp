@@ -27,7 +27,7 @@
                                     <h1 class="mt-4">Manage Orders</h1>
                                     <ol class="breadcrumb mb-4">
                                         <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                                        <li class="breadcrumb-item active"><a href="/admin/order">Orders</a></li>
+                                        <li class="breadcrumb-item"><a href="/admin/order">Orders</a></li>
                                         <li class="breadcrumb-item active">Detail</li>
                                     </ol>
                                     <div class="mt-5">
@@ -101,7 +101,7 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-12 d-flex justify-content-end">
-                                                        <a href="/admin/order"
+                                                        <a href="/admin/orders"
                                                             class="btn btn-success btn-lg mt-3 shadow rounded-pill px-4">
                                                             Back
                                                         </a>

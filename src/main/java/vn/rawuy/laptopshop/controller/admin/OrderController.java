@@ -14,6 +14,7 @@ import vn.rawuy.laptopshop.service.OrderDetailService;
 import vn.rawuy.laptopshop.service.OrderService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class OrderController {
@@ -25,7 +26,7 @@ public class OrderController {
         this.orderDetailService = orderDetailService;
     }
 
-    @GetMapping("/admin/order")
+    @GetMapping("/admin/orders")
     public String getDashboard(Model model) {
         List<Order> orders = this.orderService.hanldeGetAllOrder();
         model.addAttribute("orders", orders);
@@ -53,7 +54,22 @@ public class OrderController {
         Order order = this.orderService.fetchOrderById(newOrder.getId());
         order.setStatus(status);
         this.orderService.handleSaveOrder(order);
-        return "redirect:/admin/order";
+        return "redirect:/admin/orders";
+    }
+
+    @GetMapping("/admin/order/delete/{id}")
+    public String getDeleteOrderPage(Model model, @PathVariable long id) {
+        Order order = this.orderService.fetchOrderById(id);
+        model.addAttribute("id", id);
+        model.addAttribute("order", order);
+        return "admin/order/delete";
+    }
+
+    @PostMapping("/admin/order/delete")
+    public String postDeleteOrder(@ModelAttribute("order") Order order) {
+        this.orderService.handleDeleteOrder(order.getId());
+
+        return "redirect:/admin/orders";
     }
 
 }
