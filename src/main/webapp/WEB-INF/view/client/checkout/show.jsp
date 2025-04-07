@@ -118,12 +118,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <c:if test="${not empty cartDetails}">
-                                <form:form action="/place-order" method="post" modelAttribute="cart">
-                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-
-                                </form:form>
-                            </c:if>
 
                             <c:if test="${not empty cartDetails}">
                                 <form:form action="/place-order" method="post" modelAttribute="cart">

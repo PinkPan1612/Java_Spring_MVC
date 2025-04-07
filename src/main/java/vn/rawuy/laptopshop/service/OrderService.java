@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import vn.rawuy.laptopshop.domain.Order;
 import vn.rawuy.laptopshop.domain.OrderDetail;
+import vn.rawuy.laptopshop.domain.User;
 import vn.rawuy.laptopshop.repository.OrderRepository;
 
 @Service
@@ -46,6 +47,11 @@ public class OrderService {
             }
             this.orderRepository.deleteById(id);
         }
+    }
+
+    // find by user
+    public List<Order> handleGetOrderByUser(User user) {
+        return this.orderRepository.findByUser(user);
     }
 
 }
