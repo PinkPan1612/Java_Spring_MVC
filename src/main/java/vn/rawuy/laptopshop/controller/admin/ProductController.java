@@ -3,6 +3,9 @@ package vn.rawuy.laptopshop.controller.admin;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,9 +35,16 @@ public class ProductController {
 
     // table product
     @GetMapping("/admin/product")
-    public String getProductTable(Model model) {
-        List<Product> products = productService.handleGetAllProduct();
-        model.addAttribute("products", products);
+    public String getProductTable(Model model,
+            @RequestParam("page") int page1) {
+        // database: offset + limit
+        // page - 1 là vì page lấy từ số 0
+        Pageable pageable = PageRequest.of(page1 - 1, 4);
+
+        Page<Product> products = productService.fetchProducts(pageable);
+        // chuyển từ kiểu Page sang List để hiển thị hợp lệ lên view
+        List<Product> productList = products.getContent();
+        model.addAttribute("products", productList);
         return "admin/product/show";
     }
 

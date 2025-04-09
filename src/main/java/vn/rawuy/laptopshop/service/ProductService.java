@@ -2,6 +2,9 @@ package vn.rawuy.laptopshop.service;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -51,8 +54,8 @@ public class ProductService {
     }
 
     // getAll product
-    public List<Product> handleGetAllProduct() {
-        return this.productRepository.findAll();
+    public Page<Product> fetchProducts(Pageable pageable) {
+        return this.productRepository.findAll(pageable);
     }
 
     // get one product
@@ -61,8 +64,8 @@ public class ProductService {
     }
 
     // delete one product
-    public Product handleDeleteProductById(long id) {
-        return this.productRepository.deleteById(id);
+    public void handleDeleteProductById(long id) {
+        this.productRepository.deleteById(id);
     }
 
     public void handleAddProductToCart(String email, long productId, HttpServletRequest request, int quantity) {
