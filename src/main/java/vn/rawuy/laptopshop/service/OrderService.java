@@ -50,7 +50,7 @@ public class OrderService {
     }
 
     // find by user
-    public List<Order> handleGetOrderByUser(User user) {
+    public List<Order> fetchOrderByUser(User user) {
         return this.orderRepository.findByUser(user);
     }
 

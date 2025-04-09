@@ -11,26 +11,28 @@ import jakarta.servlet.http.HttpSession;
 import vn.rawuy.laptopshop.domain.Order;
 import vn.rawuy.laptopshop.domain.User;
 import vn.rawuy.laptopshop.service.OrderService;
-import vn.rawuy.laptopshop.service.UserService;
 
 @Controller
 public class HistoryController {
     private OrderService orderService;
-    private final UserService userService;
 
-    public HistoryController(OrderService orderService, UserService userService) {
+    // constructor
+    public HistoryController(OrderService orderService) {
         this.orderService = orderService;
-        this.userService = userService;
     }
 
+    // open history page
     @GetMapping("/history")
-    public String getHistory(Model model, HttpServletRequest request) {
+    public String getHistoryPage(Model model, HttpServletRequest request) {
+        User user = new User();
         HttpSession session = request.getSession(false);
         long id = (long) session.getAttribute("id");
-        User user = this.userService.getUserById(id);
-        List<Order> order = this.orderService.handleGetOrderByUser(user);
-        if (order == null) {
-            model.addAttribute("message", "No order found for this user.");
+        user.setId(id);
+
+        List<Order> order = this.orderService.fetchOrderByUser(user);
+
+        if (order.isEmpty()) {
+            model.addAttribute("message", "Bạn chưa có đơn hàng nào");
             return "client/history/show";
         }
 

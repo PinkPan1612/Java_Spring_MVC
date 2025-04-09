@@ -168,7 +168,7 @@
         input.val(newVal);
 
         //set form index
-    
+
         const index = input.attr("data-cart-detail-index")
         const el = document.getElementById(`cartDetails${index}.quantity`);
         $(el).val(newVal);
@@ -226,4 +226,5 @@
     }
 
 })(jQuery);
+
 

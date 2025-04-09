@@ -116,7 +116,7 @@
                                                             value="${cartDetail.quantity}"
                                                             data-cart-detail-id="${cartDetail.id}"
                                                             data-cart-detail-price="${cartDetail.price}"
-                                                            data-cart-detail-index="${status.index}">
+                                                            data-cart-detail-index="${status.index}" readonly>
                                                         <div class="input-group-btn">
                                                             <button
                                                                 class="btn btn-sm btn-plus rounded-circle bg-light border">
@@ -177,7 +177,7 @@
                                             <form:form action="/confirm-checkout" method="post" modelAttribute="cart">
                                                 <input type="hidden" name="${_csrf.parameterName}"
                                                     value="${_csrf.token}" />
-                                                <div style="display: none;">
+                                                <div style="display: block;">
                                                     <c:forEach var="cartDetail" items="${cart.cartDetails}"
                                                         varStatus="status">
                                                         <div class="mb-3">

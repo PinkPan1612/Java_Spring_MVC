@@ -74,56 +74,63 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="order" items="${orders}">
+                                        <c:if test="${empty orders}">
                                             <tr>
-                                                <td colspan="2">Order id = ${order.id}</td>
-                                                <td colspan="3">
-                                                    <fmt:formatNumber type="number" value="${order.totalPrice}" /> đ
-                                                </td>
-                                                <td>${order.status}</td>
-                                            </tr>
-                                            <c:forEach var="orderDetail" items="${order.order_Details}">
+                                                <td colspan="6">${message}</td>
+                                        </c:if>
+                                        <c:if test="${not empty orders}">
+                                            <c:forEach var="order" items="${orders}">
                                                 <tr>
-                                                    <th scope="row">
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="/images/product/${orderDetail.product.image}"
-                                                                class="img-fluid me-5 rounded-circle"
-                                                                style="width: 80px; height: 80px;"
-                                                                alt="Hình ảnh sản phẩm">
-                                                        </div>
-                                                    </th>
-                                                    <td>
-                                                        <p class="mb-0 mt-4">
-                                                            <a href="/product/${orderDetail.product.id}"
-                                                                target="_blank">
-                                                                ${orderDetail.product.name}
-                                                            </a>
-                                                        </p>
+                                                    <td colspan="2">Order id = ${order.id}</td>
+                                                    <td colspan="3">
+                                                        <fmt:formatNumber type="number" value="${order.totalPrice}" /> đ
                                                     </td>
-                                                    <td>
-                                                        <p class="mb-0 mt-4">
-                                                            <fmt:formatNumber type="number"
-                                                                value="${orderDetail.price}" /> đ
-                                                        </p>
-                                                    </td>
-                                                    <td>
-                                                        <div class="input-group quantity mt-4" style="width: 100px;">
-                                                            <input type="text"
-                                                                class="form-control form-control-sm text-center border-0"
-                                                                value="${orderDetail.quantity}">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <p class="mb-0 mt-4">
-                                                            <fmt:formatNumber type="number"
-                                                                value="${orderDetail.price * orderDetail.quantity}" />
-                                                            đ
-                                                        </p>
-                                                    </td>
-
+                                                    <td>${order.status}</td>
                                                 </tr>
+                                                <c:forEach var="orderDetail" items="${order.order_Details}">
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <div class="d-flex align-items-center">
+                                                                <img src="/images/product/${orderDetail.product.image}"
+                                                                    class="img-fluid me-5 rounded-circle"
+                                                                    style="width: 80px; height: 80px;"
+                                                                    alt="Hình ảnh sản phẩm">
+                                                            </div>
+                                                        </th>
+                                                        <td>
+                                                            <p class="mb-0 mt-4">
+                                                                <a href="/product/${orderDetail.product.id}"
+                                                                    target="_blank">
+                                                                    ${orderDetail.product.name}
+                                                                </a>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="mb-0 mt-4">
+                                                                <fmt:formatNumber type="number"
+                                                                    value="${orderDetail.price}" /> đ
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <div class="input-group quantity mt-4"
+                                                                style="width: 100px;">
+                                                                <input type="text"
+                                                                    class="form-control form-control-sm text-center border-0"
+                                                                    value="${orderDetail.quantity}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <p class="mb-0 mt-4">
+                                                                <fmt:formatNumber type="number"
+                                                                    value="${orderDetail.price * orderDetail.quantity}" />
+                                                                đ
+                                                            </p>
+                                                        </td>
+
+                                                    </tr>
+                                                </c:forEach>
                                             </c:forEach>
-                                        </c:forEach>
+                                        </c:if>
 
                                     </tbody>
                                 </table>

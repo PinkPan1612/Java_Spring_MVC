@@ -65,7 +65,7 @@ public class ProductService {
         return this.productRepository.deleteById(id);
     }
 
-    public void handleAddProductToCart(String email, long productId, HttpServletRequest request) {
+    public void handleAddProductToCart(String email, long productId, HttpServletRequest request, int quantity) {
         HttpSession session = request.getSession(false);
 
         User user = this.userService.getUserByEmail(email);
@@ -95,16 +95,17 @@ public class ProductService {
                     // nếu đã tồn tại thì tăng số lượng lên 1
                     CartDetail oldCartDetail = this.cartDetailRepository.findByCartAndProduct(cart,
                             realProduct);
-                    oldCartDetail.setQuantity(oldCartDetail.getQuantity() + 1);
+                    oldCartDetail.setQuantity(oldCartDetail.getQuantity() + quantity);
                     this.cartDetailRepository.save(oldCartDetail);
                     return;
                 }
 
+                // if not exist, create new cart detail
                 CartDetail cartDetail = new CartDetail();
                 cartDetail.setCart(cart);
                 cartDetail.setProduct(realProduct);
                 cartDetail.setPrice(realProduct.getPrice());
-                cartDetail.setQuantity(1);
+                cartDetail.setQuantity(quantity);
 
                 // save cart_details
                 this.cartDetailRepository.save(cartDetail);
@@ -117,9 +118,9 @@ public class ProductService {
             }
         }
 
-        // lưu cart_detail
     }
 
+    // tính tổng giá tiền của sản phẩm trong giỏ hàng
     public double totalPriceInOneCart(List<CartDetail> listCartDetail) {
         double totalCart = 0;
         for (CartDetail cd : listCartDetail) {
