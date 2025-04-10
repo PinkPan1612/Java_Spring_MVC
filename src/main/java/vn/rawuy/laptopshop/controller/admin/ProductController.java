@@ -39,11 +39,14 @@ public class ProductController {
             @RequestParam("page") int page1) {
         // database: offset + limit
         // page - 1 là vì page lấy từ số 0
-        Pageable pageable = PageRequest.of(page1 - 1, 4);
+        Pageable pageable = PageRequest.of(page1 - 1, 5);
 
         Page<Product> products = productService.fetchProducts(pageable);
         // chuyển từ kiểu Page sang List để hiển thị hợp lệ lên view
         List<Product> productList = products.getContent();
+
+        model.addAttribute("currentPage", page1);
+        model.addAttribute("totalPages", products.getTotalPages());
         model.addAttribute("products", productList);
         return "admin/product/show";
     }
