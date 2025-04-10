@@ -2,6 +2,8 @@ package vn.rawuy.laptopshop.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import vn.rawuy.laptopshop.domain.Order;
@@ -20,8 +22,14 @@ public class OrderService {
     }
 
     // find
-    public List<Order> hanldeGetAllOrder() {
-        return this.orderRepository.findAll();
+    // public List<Order> hanldeGetAllOrder() {
+    // return this.orderRepository.findAll();
+    // }
+
+    // find all, give page
+    public Page<Order> fetchAllOrder(Pageable page) {
+        Page<Order> orderPage = this.orderRepository.findAll(page);
+        return this.orderRepository.findAll(page);
     }
 
     // fetch order by id

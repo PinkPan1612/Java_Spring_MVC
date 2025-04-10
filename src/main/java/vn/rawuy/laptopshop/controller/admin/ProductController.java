@@ -36,16 +36,28 @@ public class ProductController {
     // table product
     @GetMapping("/admin/product")
     public String getProductTable(Model model,
-            @RequestParam("page") int page1) {
+            @RequestParam("page") Optional<String> pageOptional) {
         // database: offset + limit
         // page - 1 là vì page lấy từ số 0
-        Pageable pageable = PageRequest.of(page1 - 1, 5);
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                // convert from String to int
+                page = Integer.parseInt(pageOptional.get());
+            } else {
+                // page = 1;
+            }
+        } catch (Exception e) {
+            // page = 1
+            // TODO: handle exception
+        }
+        Pageable pageable = PageRequest.of(page - 1, 5);
 
         Page<Product> products = productService.fetchProducts(pageable);
         // chuyển từ kiểu Page sang List để hiển thị hợp lệ lên view
         List<Product> productList = products.getContent();
 
-        model.addAttribute("currentPage", page1);
+        model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", products.getTotalPages());
         model.addAttribute("products", productList);
         return "admin/product/show";
