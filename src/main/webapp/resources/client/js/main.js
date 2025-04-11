@@ -127,6 +127,20 @@
         $('#videoModal').on('hide.bs.modal', function (e) {
             $("#video").attr('src', $videoSrc);
         })
+
+        // add active  class to header 
+        const navElements = $("#navbarCollapse");
+        const currentURL = window.location.pathname;
+        navElements.find("a.nav-link").each(function () {
+            const link = $(this);
+            const href = link.attr("href");
+
+            if (href === currentURL) {
+                link.addClass("active");
+            } else {
+                link.removeClass("active");
+            }
+        });
     });
 
 
