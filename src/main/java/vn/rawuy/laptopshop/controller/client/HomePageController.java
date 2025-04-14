@@ -27,10 +27,10 @@ public class HomePageController {
     public String getHomePage(Model model) {
         // List<Product> products = this.productService.fetchProducts();
         Pageable pageable = PageRequest.of(0, 10);
-        // Page<Product> prs = this.productService.fetchProducts(pageable);
-        // List<Product> products = prs.getContent();
+        Page<Product> prs = this.productService.fetchProducts(pageable);
+        List<Product> products = prs.getContent();
 
-        // model.addAttribute("products", products);
+        model.addAttribute("products", products);
 
         return "client/homepage/show";
     }
@@ -58,10 +58,10 @@ public class HomePageController {
             // TODO: handle exception
         }
 
-        String name = nameOptional.get();
+        String name = nameOptional.isPresent() ? nameOptional.get() : "";
         Pageable pageable = PageRequest.of(page - 1, 6);
 
-        Page<Product> products = productService.fetchProducts(pageable, name);
+        Page<Product> products = productService.fetchProductsWithSpec(pageable, name);
         // chuyển từ kiểu Page sang List để hiển thị hợp lệ lên view
         List<Product> productList = products.getContent();
 
