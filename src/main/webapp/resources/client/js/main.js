@@ -161,6 +161,12 @@
     //     button.parent().parent().find('input').val(newVal);
     // });
 
+    // //filter
+    // $('#btnFilter').click(function(){
+    //     // Lấy tất cả các check box được chọn
+    //     const selectedNames = $('input[name="name"':checked)
+    // })
+
     // Product Quantity
     $('.quantity button').on('click', function () {
         let change = 0;

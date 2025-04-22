@@ -1,10 +1,12 @@
 package vn.rawuy.laptopshop.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -14,6 +16,7 @@ import vn.rawuy.laptopshop.domain.Order;
 import vn.rawuy.laptopshop.domain.OrderDetail;
 import vn.rawuy.laptopshop.domain.Product;
 import vn.rawuy.laptopshop.domain.User;
+import vn.rawuy.laptopshop.domain.dto.PriceRange;
 import vn.rawuy.laptopshop.repository.CartDetailRepository;
 import vn.rawuy.laptopshop.repository.CartRepository;
 import vn.rawuy.laptopshop.repository.OrderDetailRepository;
@@ -55,9 +58,100 @@ public class ProductService {
         return this.productRepository.save(product);
     }
 
-    // getAll product
-    public Page<Product> fetchProductsWithSpec(Pageable pageable, String name) {
-        return this.productRepository.findAll(ProductSpecs.nameLike(name), pageable);
+    // case1
+    // getAll product by name
+    public Page<Product> fetchProductsWithSpec(Pageable pageable, String names) {
+        Specification<Product> spec = Specification.where(null);
+        if (names != null) {
+            spec = spec.and(ProductSpecs.matchName(names));
+        }
+
+        return this.productRepository.findAll(spec, pageable);
+    }
+
+    // case2
+    // getAll product by min price
+    public Page<Product> fetchProductsWithSpec(Pageable pageable, double min) {
+        Specification<Product> spec = Specification.where(null);
+        if (min >= 0) {
+            spec = spec.and(ProductSpecs.minPrice(min));
+        }
+        return this.productRepository.findAll(spec, pageable);
+    }
+
+    // case 3
+    // getAll product by max price
+    public Page<Product> fetchProductsWithSpecMaxPrice(Pageable pageable, double max) {
+        Specification<Product> spec = Specification.where(null);
+        if (max >= 0) {
+            spec = spec.and(ProductSpecs.maxPrice(max));
+        }
+        return this.productRepository.findAll(spec, pageable);
+    }
+
+    // getAll product by factory
+    public Page<Product> fetchProductsWithSpecFactoryLike(Pageable pageable, String factory) {
+        Specification<Product> spec = Specification.where(null);
+        if (factory != null) {
+            spec = spec.and(ProductSpecs.equalFactory(factory));
+        }
+        return this.productRepository.findAll(spec, pageable);
+    }
+
+    // cách tạo truyền thống
+    public Page<Product> fetchProductsWithSpecPriceBetween(Pageable pageable, String price) {
+        Specification<Product> spec = Specification.where(null);
+        double minPrice = 0;
+        double maxPrice = 0;
+        if (price.equals("10-toi-15-trieu")) {
+            minPrice = 10000000;
+            maxPrice = 15000000;
+            spec = spec.and(ProductSpecs.minMaxPrice(minPrice, maxPrice));
+        } else if (price.equals("duoi-10-trieu")) {
+            maxPrice = 10000000;
+            spec = spec.and(ProductSpecs.maxPrice(maxPrice));
+        } else if (price.equals("15-toi-20-trieu")) {
+            minPrice = 15000000;
+            maxPrice = 20000000;
+            spec = spec.and(ProductSpecs.minMaxPrice(minPrice, maxPrice));
+        } else if (price.equals("tren-20-trieu")) {
+            minPrice = 20000000;
+            spec = spec.and(ProductSpecs.minPrice(minPrice));
+        }
+        return this.productRepository.findAll(spec, pageable);
+    }
+
+    // cách tạo tối ưu
+    public Page<Product> fetchProductsWithSpecPriceBetween(Pageable pageable, List<String> prices) {
+        Map<String, PriceRange> priceRangeMap = Map.of(
+                "duoi-10-trieu", new PriceRange(0, 10000000 ),
+                "tren-20-trieu", new PriceRange(20000000, Double.MAX_VALUE),
+                "15-toi-20-trieu", new PriceRange(15000000, 20000000),
+                "10-toi-15-trieu", new PriceRange(10000000, 15000000));
+
+        Specification<Product> spec = Specification.where(null);
+        if (prices.isEmpty()) {
+            // spec null
+            return this.productRepository.findAll(spec, pageable);
+        }
+        for (String priceKey : prices) {
+            PriceRange priceRange = priceRangeMap.get(priceKey);
+            if (priceRange != null && priceRange.isValid()) {
+                spec = spec.or(ProductSpecs.minMaxPrice(priceRange.getMin(), priceRange.getMax()));
+            } else {
+                continue;
+            }
+        }
+        return this.productRepository.findAll(spec, pageable);
+    }
+
+    // getAll product by list factory
+    public Page<Product> fetchProductsWithSpecFactoryLike(Pageable pageable, List<String> factory) {
+        Specification<Product> spec = Specification.where(null);
+        if (factory != null) {
+            spec = spec.and(ProductSpecs.inFactory(factory));
+        }
+        return this.productRepository.findAll(spec, pageable);
     }
 
     // getAll product
