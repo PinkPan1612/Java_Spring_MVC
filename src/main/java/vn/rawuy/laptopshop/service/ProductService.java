@@ -1,11 +1,14 @@
 package vn.rawuy.laptopshop.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,8 +18,10 @@ import vn.rawuy.laptopshop.domain.CartDetail;
 import vn.rawuy.laptopshop.domain.Order;
 import vn.rawuy.laptopshop.domain.OrderDetail;
 import vn.rawuy.laptopshop.domain.Product;
+import vn.rawuy.laptopshop.domain.Product_;
 import vn.rawuy.laptopshop.domain.User;
 import vn.rawuy.laptopshop.domain.dto.PriceRange;
+import vn.rawuy.laptopshop.domain.dto.ProductCriteriaDTO;
 import vn.rawuy.laptopshop.repository.CartDetailRepository;
 import vn.rawuy.laptopshop.repository.CartRepository;
 import vn.rawuy.laptopshop.repository.OrderDetailRepository;
@@ -60,10 +65,59 @@ public class ProductService {
 
     // case1
     // getAll product by name
-    public Page<Product> fetchProductsWithSpec(Pageable pageable, String names) {
+    public Page<Product> fetchProductsWithSpec(Pageable pageable, ProductCriteriaDTO productCriteriaDTO) {
+        if (productCriteriaDTO.getSort() != null && productCriteriaDTO.getSort().isPresent()) {
+            String requestSort = productCriteriaDTO.getSort().get();
+            int pageNo = Integer.parseInt(productCriteriaDTO.getPage().get());
+            switch (requestSort) {
+                case "gia-nothing":
+                    // giữ nguyên
+                    break;
+                case "gia-tang-dan":
+                    pageable = PageRequest.of(pageNo - 1, 6,
+                            Sort.by(Sort.Direction.ASC, Product_.PRICE));
+                    break;
+                case "gia-giam-dan":
+                    pageable = PageRequest.of(pageNo - 1, 6,
+                            Sort.by(Sort.Direction.DESC, Product_.PRICE));
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        // trường hợp rỗng hết
+        if (productCriteriaDTO.getFactory() == null &&
+                productCriteriaDTO.getTarget() == null &&
+                productCriteriaDTO.getPrice() == null) {
+            return this.productRepository.findAll(pageable);
+        }
         Specification<Product> spec = Specification.where(null);
-        if (names != null) {
-            spec = spec.and(ProductSpecs.matchName(names));
+        if (productCriteriaDTO.getFactory() != null && productCriteriaDTO.getFactory().isPresent()) {
+            List<String> factory = Arrays.asList(productCriteriaDTO.getFactory().get().split(","));
+            spec = spec.and(ProductSpecs.inFactory(factory));
+        }
+        if (productCriteriaDTO.getTarget() != null && productCriteriaDTO.getTarget().isPresent()) {
+            List<String> target = Arrays.asList(productCriteriaDTO.getTarget().get().split(","));
+            spec = spec.and(ProductSpecs.inTarget(target));
+        }
+        if (productCriteriaDTO.getPrice() != null && productCriteriaDTO.getPrice().isPresent()) {
+            Map<String, PriceRange> priceRangeMapp = Map.of(
+                    "duoi-10-trieu", new PriceRange(0, 10000000),
+                    "tren-20-trieu", new PriceRange(20000000, Double.MAX_VALUE),
+                    "15-20-trieu", new PriceRange(15000000, 20000000),
+                    "10-15-trieu", new PriceRange(10000000, 15000000));
+            List<String> prices = Arrays.asList(productCriteriaDTO.getPrice().get().split(","));
+            Specification specPrice = Specification.where(null);
+            for (String priceKey : prices) {
+                PriceRange priceRange = priceRangeMapp.get(priceKey);
+                if (priceRange != null) {
+                    specPrice = specPrice.or(ProductSpecs.minMaxPrice(priceRange.getMin(), priceRange.getMax()));
+                } else {
+                    continue;
+                }
+            }
+            spec = spec.and(specPrice);
         }
 
         return this.productRepository.findAll(spec, pageable);
@@ -124,7 +178,7 @@ public class ProductService {
     // cách tạo tối ưu
     public Page<Product> fetchProductsWithSpecPriceBetween(Pageable pageable, List<String> prices) {
         Map<String, PriceRange> priceRangeMap = Map.of(
-                "duoi-10-trieu", new PriceRange(0, 10000000 ),
+                "duoi-10-trieu", new PriceRange(0, 10000000),
                 "tren-20-trieu", new PriceRange(20000000, Double.MAX_VALUE),
                 "15-toi-20-trieu", new PriceRange(15000000, 20000000),
                 "10-toi-15-trieu", new PriceRange(10000000, 15000000));

@@ -44,6 +44,21 @@ public class ProductSpecs {
         };
     }
 
+    // filter product by more target
+    public static Specification<Product> inTarget(List<String> target) {
+        return (root, query, criteriaBuilder) -> {
+            if (target == null || target.isEmpty()) {
+                return criteriaBuilder.conjunction(); // no filtering if list is empty
+            }
+
+            CriteriaBuilder.In<String> inClause = criteriaBuilder.in(root.get(Product_.TARGET));
+            for (String ta : target) {
+                inClause.value(ta);
+            }
+            return inClause;
+        };
+    }
+
     // search at min- max price
     // cách viết 1
     public static Specification<Product> minMaxPrice(double min, double max) {
@@ -67,5 +82,5 @@ public class ProductSpecs {
     // criteriaBuilder.and(criteriaBuilder.ge(root.get(Product_.PRICE), min),
     // criteriaBuilder.le(root.get(Product_.PRICE), max));
     // };
-
+   
 }
